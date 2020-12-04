@@ -46,6 +46,7 @@ class ProductController extends AbstractController
         ->add('date', TextType::class, array('attr' => array('class'=> 'form-control w-75', 'style'=>'margin-bottom:15px')))
         ->add('time', TimeType::class, array('attr' => array('style'=>'margin-bottom:15px')))
          ->add('description', TextAreaType::class, array('attr' => array('class'=> 'form-control w-75', 'style'=>'margin-bottom:15px')))
+         ->add( 'type' , ChoiceType::class, array ( 'choices' => array ( 'Theater' => 'Theater' , 'Concerts' => 'Concerts' , 'Tour' => 'Tour' ), 'attr'  => array ( 'class' => 'form-control w-75' , 'style' => 'margin-botton:15px' )))
         ->add('save', SubmitType::class, array('label'=> 'Create Event', 'attr' => array('class'=> 'btn btn-outline-info', 'style'=>'margin-bottom:15px')))
         ->getForm();
         $form->handleRequest($request);
@@ -63,6 +64,7 @@ class ProductController extends AbstractController
             $date = $form['date']->getData();
             $time = $form['time']->getData();
             $description = $form['description']->getData();
+            $type = $form['type']->getData();
             
             // Here we will get the current date
             // $now = new\DateTime('now');
@@ -75,6 +77,7 @@ class ProductController extends AbstractController
             $product->setDate($date);
             $product->setTime($time);
             $product->setDescription($description);
+            $product->setType($type);
             $em = $this->getDoctrine()->getManager();
             $em->persist($product); // build the query  
             $em->flush(); // like you run the query
@@ -103,6 +106,7 @@ class ProductController extends AbstractController
         $product->setDate($product->getDate());
         $product->setTime($product->getTime());
         $product->setDescription($product->getDescription());
+        $product->setType($product->getType());
         
     /* Now when you type createFormBuilder and you will put the variable product the form will be filled of the data that you already set it */
            $form = $this->createFormBuilder($product)
@@ -113,6 +117,7 @@ class ProductController extends AbstractController
            ->add('date', TextType::class, array('attr' => array('class' => 'form-control w-75', 'style'=>'margin-botton:15px' )))
            ->add('time', TimeType::class, array('attr' => array('style'=>'margin-bottom:15px')))
            ->add('description', TextAreaType::class, array('attr' => array('class' => 'form-control w-75', 'style'=>'margin-botton:15px' )))
+           ->add( 'type' , ChoiceType::class, array ( 'choices' => array ( 'Theater' => 'Theater' , 'Concerts' => 'Concerts' , 'Tour' => 'Tour' ), 'attr'  => array ( 'class' => 'form-control w-75' , 'style' => 'margin-botton:15px' )))
            ->add('save', SubmitType::class, array('label'=> 'Update product' , 'attr' => array( 'class'=> 'btn btn-outline-info mt-3', 'style' =>'margin-botton:15px')))
            ->getForm();
            $form->handleRequest($request);
@@ -125,6 +130,7 @@ class ProductController extends AbstractController
                $date = $form[ 'date']->getData();
                $time = $form[ 'time']->getData();
                $discription = $form[ 'description']->getData();
+               $type = $form[ 'type']->getData();
                $em = $this->getDoctrine()->getManager();
                $product = $em->getRepository( 'App:product')->find($id);
                $product->setName($product->getName());
@@ -134,6 +140,7 @@ class ProductController extends AbstractController
                $product->setDate($product->getDate());
                $product->setTime($product->getTime());
                $product->setDescription($product->getDescription());
+               $product->setType($product->getType());
                
            
                $em->flush();
@@ -179,5 +186,12 @@ class ProductController extends AbstractController
     return $this->redirectToRoute('indexAction');
     }
 
+    /**
+    * @Route("/filter/{type}", name="event_filter")
+    */
+    public function filter($type){
+        $products = $this->getDoctrine()->getRepository('App:Product')->findByType($type);
+        return $this ->render('product/index.html.twig', array('products'=>$products));
+}
 
 }
