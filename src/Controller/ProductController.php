@@ -47,7 +47,7 @@ class ProductController extends AbstractController
         ->add('time', TimeType::class, array('attr' => array('style'=>'margin-bottom:15px')))
          ->add('description', TextAreaType::class, array('attr' => array('class'=> 'form-control w-75', 'style'=>'margin-bottom:15px')))
          ->add( 'type' , ChoiceType::class, array ( 'choices' => array ( 'Theater' => 'Theater' , 'Concerts' => 'Concerts' , 'Tour' => 'Tour' ), 'attr'  => array ( 'class' => 'form-control w-75' , 'style' => 'margin-botton:15px' )))
-        ->add('save', SubmitType::class, array('label'=> 'Create Event', 'attr' => array('class'=> 'btn btn-outline-info', 'style'=>'margin-bottom:15px')))
+        ->add('save', SubmitType::class, array('label'=> 'Create Event', 'attr' => array('class'=> 'btn btn-outline-info mt-3', 'style'=>'margin-bottom:15px')))
         ->getForm();
         $form->handleRequest($request);
         
@@ -118,7 +118,7 @@ class ProductController extends AbstractController
            ->add('time', TimeType::class, array('attr' => array('style'=>'margin-bottom:15px')))
            ->add('description', TextAreaType::class, array('attr' => array('class' => 'form-control w-75', 'style'=>'margin-botton:15px' )))
            ->add( 'type' , ChoiceType::class, array ( 'choices' => array ( 'Theater' => 'Theater' , 'Concerts' => 'Concerts' , 'Tour' => 'Tour' ), 'attr'  => array ( 'class' => 'form-control w-75' , 'style' => 'margin-botton:15px' )))
-           ->add('save', SubmitType::class, array('label'=> 'Update product' , 'attr' => array( 'class'=> 'btn btn-outline-info mt-3', 'style' =>'margin-botton:15px')))
+           ->add('save', SubmitType::class, array('label'=> 'Update Event' , 'attr' => array( 'class'=> 'btn btn-outline-info mt-3', 'style' =>'margin-botton:15px')))
            ->getForm();
            $form->handleRequest($request);
             if($form->isSubmitted() && $form->isValid()){
